@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Especificações do Circuito</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <h1>Especificações Circuito</h1>
+    <div><h2>Grupo:</h2></div>
+        <h4>Pedro Alves de Souza Moraes<br></br>
+    Henrique Prado Carvalho de Sa Lima<br></br>
+Pedro Henrique Costa Leal<br></br>
+Geovanna Caroline Lima Santos<br></br>
+Luiz Eduardo Brocco de Carvalho<br></br>
+</h4>
+
+    <br></br>
+
+    <h3>Estrutura do Projeto</h3>
+    <div>O circuito foi montado em uma placa de circuito impresso (PCI) feita com placa de fenolite revestida com cobre, que permite a condução elétrica entre os componentes. Para a confecção do layout do circuito, utilizamos um adesivo automotivo recortado com o desenho das trilhas. Esse adesivo funciona como uma máscara protetora, impedindo que as áreas cobertas sejam corroídas no processo químico.
+
+        Após a fixação do adesivo na placa, foi realizado o processo de corrosão para remover o cobre excedente, deixando apenas as trilhas do circuito. Em seguida, foram feitos os furos com uma broca de 0.1 mm de diâmetro, permitindo a soldagem dos terminais dos componentes eletrônicos. Esse método garante maior precisão na montagem do circuito e proporciona um acabamento mais profissional.
+        
+        A estrutura final da placa permite a montagem segura e organizada do sistema de controle de temperatura, facilitando tanto a fixação dos componentes quanto a futura manutenção.</div>
+        <h3> 1. Resumo do Circuito do Projeto </h3>
+        <br></br>
+        <div> Para a construção de um sistema de controle de temperatura, necessitamos de alguns circuitos, sendo eles:
+            <br></br>
+          <br>  - Controle de corrente alternada; </br> 
+          <br>  - Sistema detector de zeros;</br> 
+          <br>  - Sistema de controle de tensão e um mecanismo de controle;</br> 
+          <br></br>
+            Sendo estes o controle proporcional integral derivativo (PID). Para se aprofundar nos cálculos do PID, é necessário olhar o apêndice.
+        </div>
+
+<h3>2. Controle de Corrente Alternada</h3>
+<div>Temos duas alternativas para controlar uma corrente alternada. A primeira seria relé, e a segunda seria algo parecido com um botão on/off na resistência, comando pelo Arduino
+    Esse tipo de controle funciona como relé de temperatura, usando o mesmo princípio de uma geladeira. Como é um projeto em pequena escala, será melhor.</div>
+    <br></br>
+    <div>Primeiro ponto de importância
+        <br></br>
+        - Uma resistência de 220V poderia queimar o projeto, e vamos utilizar uma corrente alternada.
+    </div>
+    <h3>3. Sistemas detector de zero</h3>
+    
+    <div> Ele informa onde senoide começa, sendo um circuito que permite um controle comandado pelo Arduino, determinado pela parte da onda da senoide que é enviada para o circuito que é enviada para o circuito. 
+         Optoacoplador: É composot por um fotodiodo e um fototransistor. o funcionamento é simples: quando chega tensão nele, é gerado um determinado valor positivo, que varia com o modelo do opto. O diodo passa a conduzir
+        ebtre o coletor e o emissor. Desse modo, temos um circuito no qual qualquer tensão no lado esquerdo é detectada e convertida em emissão de luz do lado direito, significando que não há ocrrenter elétrica entre ambos.
+    Ou seja , se houver uma sobretensão do lado esquerdo, essa tensão não é passada para o lado direito, preservando a parte mais sensivel do circuito</div>
+
+        <h3> 4. Sistema de controle de tensão</h3>
+
+        <div>Circuito de controle de tensão para cargas de 110 V e 220 V: Para fazer isso, usamos um
+            circuito baseado em TRIAC. O software que compõe o Arduino conta com um mecanismo de
+            interrupção que monitora a passagem por zero no ciclo. Dentro da rotina, é executado, em
+            cada zero, o sistema liga o TRIAC em instantes distintos, de acordo com a tensão que se deseja
+            enviar à carga, e o TRIAC desliga na próxima passagem por zero. </div>
+
+            <h3>Integração entre hardware e software</h3>
+
+            <div>O sistema demonstra uma interacao direta entre o hardware e o software. O sensor LM35,
+                como componente fisico, realiza a captacao da temperatura. Essa informacao e entao processada
+                pelo Arduino por meio do codigo embarcado, que interpreta os dados e toma decisoes baseadas
+                em parametros estabelecidos. A atuacao sobre o modulo rele representa a resposta fisica do
+                sistema, fechando o ciclo de controle automatico.</div>
+
+          <h3>5. Controle Proporcional Integra Derivativo</h3>
+          
+          <div>O controle PID é um mecanismo genérico de controle do tipo "loop feedback", ou seja, o sistema leva em conta a reposta do processo durante o ajuste para modificar seu comportamento. 
+            </div>
+        <div> PID calcula um erro, que é ea diferença entre o valor atual da variável a ser controlada no
+            tempo e o setpoint . Ele tenta minimizar o erro ajustando a entrada do processo de controle. </div>
+            <div> O algoritmo envolve três parâmetros, sendo assim o PID pode ser chamado de controle de
+                três termos: os termos proporcional, integral e derivativo. </div>
+                <div>Heuristicamente, esses valores podem ser interpretados em termos de tempo: P depende
+                    do erro presente, I da acumulação de erros passados, e D é uma tentativa de prever os erros
+                    futuros, baseado na taxa atual de mudança.</div>
+                    <div>Quando não se conhecem as especificidades de um processo, o PID é considerado o melhor
+                        algoritmo de controle. Ajustando esses três parâmetros do PID, conseguimos fazê-lo atender
+                        1
+                       às demandas específicas de cada processo a ser controlado. É importante observar que o PID,
+                        por si só, não garante o controle ótimo do sistema nem sua estabilidade. Cada caso é um caso.
+                        A teoria por trás do PID baseia-se no controle desses três termos para ajustar a potência
+                        necessária para que a temperatura atinja o setpoint . Quando a temperatura está abaixo do
+                        setpoint , ele injeta uma potência proporcional para atingir o setpoint . Quando a temperatura
+                        fica acima do setpoint , ele diminui a potência para assim ficar abaixo do setpoint , conseguindo,
+                        desse modo, realizar o controle. </div>
+
+                    <h3>Lógica de Controle</h3>
+                    <div>O projeto implementa um sistema de controle de temperatura com Arduino, utilizando o sensor LM35 para medir a temperatura em tempo real. O usuário pode ajustar manualmente o setpoint (temperatura desejada) por meio de dois botões. As informações são exibidas em um display LCD 16x2 via comunicação I2C.</div>
+                    <div>A lógica de controle utiliza um PID simplificado, que ajusta a potência aplicada a uma carga resistiva (como um fogão elétrico) com base na diferença entre a temperatura medida e o setpoint. Esse controle é feito por meio de um disparo por ângulo de fase, usando um TRIAC acionado através de um optoacoplador MOC3021. A temporização do disparo é sincronizada com a passagem por zero da rede elétrica, usando interrupções no Arduino.</div>
+                    <h3>Códigos do Arduino</h3>
+                    <p>Esse trecho configura dois botões para aumentar ou diminuir o valor de temperatura desejada (SetPoint). Usa uma técnica chamada debounce para evitar leituras erradas por causa de ruído mecânico dos botões. Cada vez que um botão é pressionado, o SetPoint é ajustado em ±1 grau.</p>
+                    <img src="Definição de temperatura.png" alt="Trecho do código que demonstra a definição de temperatura">
+                    <p>A função zero_crosss_int() controla o momento exato em que o TRIAC (um tipo de chave eletrônica) deve ligar a carga. O tempo de espera é calculado com base na potência desejada (power), permitindo controlar a energia enviada a uma carga AC</p>
+                        <img src="Identificador de Imagem.png" alt="Identificador de 0">
+                        <p>Essa é a função que roda continuamente no Arduino:<br></br>
+
+                            Lê a temperatura do sensor.<br></br>
+                            
+                            Ajusta o valor de SetPoint com os botões.<br></br>
+                            
+                            Calcula a potência necessária para atingir o SetPoint usando uma função PID.<br></br>
+                            
+                            Mostra a temperatura atual, o SetPoint e o nível de potência em um display LCD.<br></br>
+                            
+                            </p>
+                            <img src="Loop Arduino.png" alt="Loop Arduino">
+                            <p>Essa função simula um controlador PID simples:<br></br>
+
+                                Compara a temperatura desejada (SetPoint) com a atual.<br></br>
+                                
+                                Define o valor de power (potência) com base na diferença de temperatura.<br></br>
+                                
+                                Quanto maior a diferença, maior a potência.<br></br></p>
+                                <img src="PID.png" alt="PID">
+                              <p>Esse código é executado apenas uma vez ao iniciar o Arduino:<br></br>
+
+                                Define pinos de entrada e saída.<br></br>
+                                
+                                Inicia comunicação serial e LCD.<br></br>
+                                
+                                Configura os botões.<br></br> 
+                                
+                                Lê a temperatura do sensor LM35 (faz média de 5 leituras para maior precisão).<br></br></p>  
+                                <img src="Satup do arduino.png" alt="Setup do Arduino">
+                        <h3>6. Conclusão</h3>
+                        <div> Baseando-se nos pontos mostrados anteriormente, é necessário, para a fabricação do circuito
+                            de controle de temperatura, sabermos a teoria por trás dos circuitos apresentados, além da
+                            teoria por trás do sistema de cálculo chamado PID.</div>
+
+                            <h3>Referências</h3>
+                            <div> 
+                            <a href="https://automatobr.blogspot.com/2013/05/controle-de-potencia-em-corrente_20.html" target="_blank">Controle PID de Potência em Corrente Alternada I</a></div>
+                        <div>
+                            <a href="https://automatobr.blogspot.com/2013/05/controle-de-potencia-em-corrente_26.html " target="_blank">Controle PID de Potência em Corrente Alternada II</a></div>
+                        <div>
+                            <a href="https://automatobr.blogspot.com/2013/05/controle-de-potencia-em-corrente_5151.html " target="_blank">Controle PID de Potência em Corrente Alternada III</a></div>
+                        <div>
+                            <a href="https://automatobr.blogspot.com/2013/05/controle-de-potencia-em-corrente.html " target="_blank">Controle PID de Potência em Corrente Alternada IV</a></div>
+                        <div>
+                            <a href="https://automatobr.blogspot.com/2013/05/controle-de-potencia-em-corrente_17.html " target="_blank">Controle PID de Potência em Corrente Alternada V</a></div>
+                        <div>
+                            <a href="https://automatobr.blogspot.com/2013/05/controle-de-potencia-em-corrente_18.html" target="_blank">Controle PID de Potência em Corrente Alternada VI</a></div>
+
+                            <h3>7. Apêndice</h3>
+                            <div>
+                                <a href="https://automatobr.blogspot.com/2013/05/controle-de-potencia-em-corrente_20.html" target="_blank">Controle PID de Potência em Corrente Alternada I</a></div>
+                        <div>
+                            <a href="https://automatobr.blogspot.com/2013/05/controle-de-potencia-em-corrente_26.html " target="_blank">Controle PID de Potência em Corrente Alternada II</a></div>
+
+                            
+
+
+                        
+
+                            
+
+
+                           
+                    
+
+
+
+</body>
+</html>
